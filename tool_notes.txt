@@ -1,0 +1,10 @@
+Apache Airflow
+    - Out of the box, Airflow uses a SQLite database, which you should outgrow fairly quickly since no parallelization is possible using this database backend. It works in conjunction with the SequentialExecutor which will only run task instances sequentially. 
+    While this is very limiting, it allows you to get up and running quickly and take a tour of the UI and the command line utilities.
+    DAGs = directed acyclic graph
+        - ordering of tasks
+        - DAGs are defined in standard Python files that are placed in Airflow’s DAG_FOLDER. Airflow will execute the code in each file to dynamically build the DAG objects. 
+        You can have as many DAGs as you want, each describing an arbitrary number of tasks. In general, each one should correspond to a single logical workflow.
+    Tasks = DAG nodes
+        - unit of work within a DAG
+        - written in Python
