@@ -1,5 +1,5 @@
 from common.classes.AwsManager import AwsManager
 from common.classes.YahooFiManager import YahooFiManager
 
-S3Client = AwsManager()
+AwsClient = AwsManager()
 YahooClient = YahooFiManager()
