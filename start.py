@@ -1,4 +1,7 @@
-
+import boto
+import os
+import pandas as pd
+import yfinance as yf
 '''
 I think a mini-project here would be a great way to go about learning these tools. A potential project you could do:
 
@@ -13,3 +16,5 @@ I think a mini-project here would be a great way to go about learning these tool
     - Query the Athena database to pull interesting information from the data (whatever you find interesting)
     - Send the data to yourself in an email with the details in an excel attachment to the file
 '''
+data = yf.download("SPY AAPL", start="2017-01-01", end="2017-04-30")
+print(data)

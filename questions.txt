@@ -1,0 +1,6 @@
+Create airflow job to:
+Pull structured data from an online data source (stock data is pretty easy to get, could also do sports or travel information)
+    - to accomplish this, use API to retrieve data (yahoo finance API?)
+    - so Apache Airflow is like CronJobs on steroids?
+Write the data to an S3 bucket
+    - S3 is the data lake
