@@ -4,6 +4,7 @@ Pull structured data from an online data source (stock data is pretty easy to ge
     - so Apache Airflow is like CronJobs on steroids?
 Write the data to an S3 bucket
     - S3 is the data lake
+    - how many buckets are there for PGx? How do you manage them at app level (more for larger understanding than this proj)?
 File Structure/ Resource MGMT
     - Do you have a main app file you set up all your connections/ sessions to (e.g. AWS), then each Airflow task pulls from that file?
         - if not, what is the file structure/ protocol you use?
