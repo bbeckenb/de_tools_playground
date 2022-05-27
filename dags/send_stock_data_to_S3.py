@@ -27,9 +27,9 @@ def send_stock_data_to_S3():
     data = get_stock_data('AMZN')
     write_to_s3(data)
 
-with DAG(dag_id='send_stock_data_to_S3',
+with DAG(dag_id='send_stock_data_to_s3',
         start_date=datetime.datetime(2022,5,27),
-        schedule="@hourly",
+        schedule_interval='* * * * *',
         catchup=False) as dag:
 
     task1 = PythonOperator(task_id='send_stock_data_to_S3',
