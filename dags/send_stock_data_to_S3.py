@@ -19,9 +19,8 @@ def write_to_s3(data: pd.DataFrame) -> None:
     csv_buffer = StringIO()
     data.to_csv(csv_buffer)
     bucket_name = 'brycepracticebucket'
-    s3_obj_name = 'test.csv'
+    s3_obj_name = f'{datetime.datetime.today()}.csv'
     AwsClient.s3_res.Object(bucket_name, s3_obj_name).put(Body=csv_buffer.getvalue())
-    print('success!')
 
 def send_stock_data_to_S3():
     data = get_stock_data('AMZN')
