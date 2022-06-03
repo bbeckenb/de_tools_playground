@@ -56,3 +56,8 @@ class AwsManager:
             time.sleep(1)
         
         return False
+
+    def clean_up_query_folder(self):
+        bucket = self.s3_res.Bucket('brycepracticequeryresbucket')
+        for item in bucket.objects.filter(Prefix='temp/athena/output'):
+            item.delete()

@@ -3,8 +3,10 @@ import pandas as pd
 import re
 from common.clients import AwsClient
 
-def query_stock_data():
+def query_stockdb_get_s3_filename():
     query = 'SELECT * FROM amznamzn LIMIT 5'
-    AwsClient.query_athena(query)
+    filename = AwsClient.query_athena_get_s3_file(query)
+    return filename
 
-query_stock_data()
+# print(query_stockdb_get_s3_filename())
+AwsClient.clean_up_query_folder()
