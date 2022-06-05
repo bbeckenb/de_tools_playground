@@ -1,6 +1,7 @@
 import boto3
 import time
 import re
+import pandas as pd
 
 class AwsManager:
     '''Class to set up session with AWS and manage resources'''
@@ -56,6 +57,13 @@ class AwsManager:
             time.sleep(1)
         
         return False
+
+    def get_csv_from_s3(self, file_name):
+        obj = self.s3_res.Object('brycepracticequeryresbucket',
+                                f'temp/athena/output/{file_name}')
+        
+        read_file = obj.get()['Body'].read().decode('utf-8')
+        return read_file
 
     def clean_up_query_folder(self):
         bucket = self.s3_res.Bucket('brycepracticequeryresbucket')

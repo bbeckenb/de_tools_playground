@@ -8,5 +8,9 @@ def query_stockdb_get_s3_filename():
     filename = AwsClient.query_athena_get_s3_file(query)
     return filename
 
-# print(query_stockdb_get_s3_filename())
-AwsClient.clean_up_query_folder()
+file_name = query_stockdb_get_s3_filename()
+print(file_name)
+
+new_file = AwsClient.get_csv_from_s3(file_name)
+print(new_file)
+# AwsClient.clean_up_query_folder()
