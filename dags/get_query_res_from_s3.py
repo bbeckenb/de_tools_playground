@@ -1,7 +1,7 @@
 import datetime
 import pandas as pd
 import re
-from common.clients import AwsClient
+from common.clients import AwsClient, EmailClient
 
 def query_stockdb_get_s3_filename():
     query = 'SELECT * FROM amznamzn LIMIT 5'
@@ -13,4 +13,6 @@ print(file_name)
 
 new_file = AwsClient.get_csv_from_s3(file_name)
 print(new_file)
-# AwsClient.clean_up_query_folder()
+AwsClient.clean_up_query_folder()
+
+EmailClient.send_email_to_self(new_file)

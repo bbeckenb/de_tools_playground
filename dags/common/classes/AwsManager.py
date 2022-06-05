@@ -62,7 +62,9 @@ class AwsManager:
         obj = self.s3_res.Object('brycepracticequeryresbucket',
                                 f'temp/athena/output/{file_name}')
         
-        read_file = obj.get()['Body'].read().decode('utf-8')
+        read_file = obj.get()['Body'].read()
+        # read_file = obj.get()['Body'].read().decode('utf-8')
+        # file_to_df = pd.read_csv(read_file)
         return read_file
 
     def clean_up_query_folder(self):
