@@ -2,6 +2,11 @@ import boto3
 import time
 import re
 import pandas as pd
+import datetime
+import os
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
 
 class AwsManager:
     '''Class to set up session with AWS and manage resources'''
@@ -9,6 +14,9 @@ class AwsManager:
         self.aws_sess = self.create_aws_client()
         self.s3_res = self.create_s3_resource()
         self.athena_client = self.create_athena_client()
+        self.ses_client = self.create_ses_client()
+        self.email_addr = str(os.getenv('EMAIL_ADDR'))
+        self.email_pwd = str(os.getenv('EMAIL_PWD'))
 
     def create_aws_client(self):
         aws_session = boto3.Session(profile_name='hobby_dev')
@@ -21,6 +29,10 @@ class AwsManager:
     def create_athena_client(self):
         athena = self.aws_sess.client('athena')
         return athena
+
+    def create_ses_client(self):
+        ses = self.aws_sess.client('ses')
+        return ses
 
     def query_athena(self, query_str):
         res = self.athena_client.start_query_execution(
@@ -71,3 +83,36 @@ class AwsManager:
         bucket = self.s3_res.Bucket('brycepracticequeryresbucket')
         for item in bucket.objects.filter(Prefix='temp/athena/output'):
             item.delete()
+
+    def create_email_template(self):
+        response = self.ses_client.update_template(
+            Template={
+                'TemplateName':'report-template',
+                'SubjectPart':'Results',
+                'TextPart':'These are the stock reports from today',
+                'HtmlPart':'These are the stock reports from today',
+            }
+        )
+        print(response)
+
+    def ses_send_email(self, query_df):
+        today_date = datetime.datetime.today().strftime('%Y-%m-%d')
+        try:
+            msg = MIMEMultipart('mixed')
+            msg['Subject'] = f'{today_date} stock analysis results'
+            msg['From'] = 'brycebeckenbach@gmail.com'
+            msg['To'] = 'brycebeckenbach@gmail.com'
+
+            part = MIMEText('Howdy -- here is the stock data from today.')
+            msg.attach(part)
+
+            part = MIMEApplication(query_df)
+            part.add_header(f'{today_date}_results', 'attachment', filename=f'{today_date}_results.xlsx')
+            msg.attach(part)
+            
+            response = self.ses_client.send_raw_email(
+                Source='brycebeckenbach@gmail.com',
+                Destinations=['brycebeckenbach@gmail.com'],
+                RawMessage={'Data': msg.as_string()}
+            )
+ 
