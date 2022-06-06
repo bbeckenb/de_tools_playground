@@ -4,7 +4,7 @@ import re
 from common.clients import AwsClient
 
 def query_stockdb_get_s3_filename():
-    query = 'SELECT * FROM amznamzn LIMIT 5'
+    query = 'SELECT * FROM amznamzn WHERE open < close'
     filename = AwsClient.query_athena_get_s3_file(query)
     return filename
 

@@ -97,22 +97,23 @@ class AwsManager:
 
     def ses_send_email(self, query_df):
         today_date = datetime.datetime.today().strftime('%Y-%m-%d')
-        try:
-            msg = MIMEMultipart('mixed')
-            msg['Subject'] = f'{today_date} stock analysis results'
-            msg['From'] = 'brycebeckenbach@gmail.com'
-            msg['To'] = 'brycebeckenbach@gmail.com'
+     
+        msg = MIMEMultipart('mixed')
+        msg['Subject'] = f'{today_date} stock analysis results'
+        msg['From'] = 'brycebeckenbach@gmail.com'
+        msg['To'] = 'brycebeckenbach@gmail.com'
 
-            part = MIMEText('Howdy -- here is the stock data from today.')
-            msg.attach(part)
+        part = MIMEText('Howdy -- here is the stock data from today.')
+        msg.attach(part)
 
-            part = MIMEApplication(query_df)
-            part.add_header(f'{today_date}_results', 'attachment', filename=f'{today_date}_results.xlsx')
-            msg.attach(part)
-            
-            response = self.ses_client.send_raw_email(
-                Source='brycebeckenbach@gmail.com',
-                Destinations=['brycebeckenbach@gmail.com'],
-                RawMessage={'Data': msg.as_string()}
-            )
+        part = MIMEApplication(query_df)
+        part.add_header(f'{today_date}_results', 'attachment', filename=f'{today_date}_results.xlsx')
+        msg.attach(part)
+        
+        response = self.ses_client.send_raw_email(
+            Source='brycebeckenbach@gmail.com',
+            Destinations=['brycebeckenbach@gmail.com'],
+            RawMessage={'Data': msg.as_string()}
+        )
+        print(response)
  
